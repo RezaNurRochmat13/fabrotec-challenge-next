@@ -90,7 +90,7 @@ export default async function ProductsPage({ searchParams }: { searchParams?: Re
           <div className="relative overflow-hidden">
             <Image 
               src={product.thumbnail} 
-              alt={product.title} 
+              alt={product.title}
               width={300} 
               height={200} 
               className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" 
