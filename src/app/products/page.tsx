@@ -6,8 +6,11 @@ import { fetchProducts } from '@/lib/products';
 export default async function ProductsPage({ searchParams }: { searchParams?: Record<string, string> }) {
   const sortBy = searchParams?.sortBy || '';
   const order = (searchParams?.order as 'asc' | 'desc') || '';
-  const productsData = await fetchProducts({ sortBy, order, limit: 20 });
+  const page = Number(searchParams?.page) || 1;
+  const limit = Number(searchParams?.limit) || 10;
+  const productsData = await fetchProducts({ sortBy, order, limit, skip: (page - 1) * limit });
   const products = productsData.products;
+  const total = productsData.total;
   const sortFields = [
     { value: 'title', label: 'Title' },
     { value: 'description', label: 'Description' },
@@ -119,6 +122,16 @@ export default async function ProductsPage({ searchParams }: { searchParams?: Re
         </Link>
       ))}
     </div>
+      {/* Pagination Controls */}
+      <div className="flex justify-center items-center gap-2 mt-8">
+        {page > 1 && (
+          <Link href={`?sortBy=${sortBy}&order=${order}&page=${page-1}&limit=${limit}`} className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold">Previous</Link>
+        )}
+        <span className="px-4 py-2 text-gray-700">Page {page} of {Math.ceil(total/limit)}</span>
+        {page < Math.ceil(total/limit) && (
+          <Link href={`?sortBy=${sortBy}&order=${order}&page=${page+1}&limit=${limit}`} className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold">Next</Link>
+        )}
+      </div>
   </Suspense>
 </main>
   );
