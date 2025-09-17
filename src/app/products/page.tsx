@@ -1,28 +1,33 @@
-import { fetchProducts } from '@/lib/products';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Suspense } from 'react';
+import { fetchProducts } from '@/lib/products';
 
 export default async function ProductsPage({ searchParams }: { searchParams?: Record<string, string> }) {
-  const category = searchParams?.category || '';
-  const sort = (searchParams?.sort as 'asc' | 'desc') || 'asc';
-  const productsData = await fetchProducts({ category, sort, limit: 20 });
+  const sortBy = searchParams?.sortBy || '';
+  const order = (searchParams?.order as 'asc' | 'desc') || 'asc';
+  const productsData = await fetchProducts({ sortBy, order, limit: 20 });
   const products = productsData.products;
-  const categories = Array.from(new Set(products.map(p => p.category)));
+  const sortFields = [
+    { value: 'title', label: 'Title' },
+    { value: 'description', label: 'Description' },
+    { value: 'price', label: 'Price' },
+  ];
 
   return (
     <main className="max-w-5xl mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Products</h1>
       <form className="flex gap-4 mb-6">
-        <select name="category" defaultValue={category} className="border p-2 rounded">
-          <option value="">All Categories</option>
-          {categories.map(cat => (
-            <option key={cat} value={cat}>{cat}</option>
+        <select name="sortBy" defaultValue={sortBy} className="border p-2 rounded">
+          <option value="">Sort By</option>
+          {sortFields.map(field => (
+            <option key={field.value} value={field.value}>{field.label}</option>
           ))}
         </select>
-        <select name="sort" defaultValue={sort} className="border p-2 rounded">
-          <option value="asc">Price: Low to High</option>
-          <option value="desc">Price: High to Low</option>
+        <select name="order" defaultValue={order} className="border p-2 rounded">
+          <option value="">Order By</option>
+          <option value="asc">Ascending</option>
+          <option value="desc">Descending</option>
         </select>
         <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">Filter</button>
       </form>
