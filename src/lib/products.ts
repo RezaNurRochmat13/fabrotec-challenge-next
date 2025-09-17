@@ -1,5 +1,3 @@
-// Product types and API utilities for dummyjson.com
-
 export interface Product {
   id: number;
   title: string;
@@ -27,7 +25,7 @@ export async function fetchProducts(params?: {
   limit?: number;
   skip?: number;
 }): Promise<ProductsResponse> {
-  let url = 'https://dummyjson.com/products';
+  let url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/products`;
   const query: string[] = [];
   if (params?.sortBy) query.push(`category=${params.sortBy}`);
   if (params?.limit) query.push(`limit=${params.limit}`);
@@ -45,7 +43,7 @@ export async function fetchProducts(params?: {
 }
 
 export async function fetchProduct(id: number): Promise<Product> {
-  const res = await fetch(`https://dummyjson.com/products/${id}`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/products/${id}`);
   if (!res.ok) throw new Error('Failed to fetch product');
   return res.json();
 }
