@@ -3,7 +3,9 @@ import { notFound } from 'next/navigation';
 import BackButton from './BackButton';
 import { ProductCarousel } from '../ProductCarousel';
 
-export default async function ProductPage({ params }: { params: { id: string } }) {
+export default async function ProductPage(props: { params: { id: string } }) {
+  const { params } = props;
+  await Promise.resolve(); // Ensure params is awaited for Next.js dynamic API
   const productId = Number(params.id);
   if (isNaN(productId)) return notFound();
   const product = await fetchProduct(productId);
