@@ -7,8 +7,8 @@ This is a NextJS project that is a challenge from Fabrotec to create a products 
 First, run the development server:
 ```bash
 npm run dev
-Then, open [http://localhost:3000/products](http://localhost:3000/products) with your browser to see the result.
 ```
+Then, open [http://localhost:3000/products](http://localhost:3000/products) with your browser to see the result.
 
 ## Features
 
